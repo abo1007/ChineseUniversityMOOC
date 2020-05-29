@@ -3,16 +3,12 @@
 $(document).ready(() => {
 	
 	// lession 框显示隐藏动画
-	var isblur;
 	$('#li-lession').mouseover(() => {
-		isblur = true;
 		$('.lession').fadeIn(600);
 		$('.lession').mousemove(() => {
 			$('.lession').show()
-			isblur = true;
 		}).mouseleave(() => {
 			$('.lession').fadeOut(400)
-			isblur = false
 		})
 	})
 	$('.li-hide').mouseover(() => {
@@ -69,6 +65,17 @@ $(document).ready(() => {
 		}
 	})
 	
+	// 注册验证
+	$('#register-email').blur(() => RegisterTest());
+	$('#register-password').blur(() => RegisterTest());
+	$('#register-verify').blur(() => RegisterTest());
+	
+	$('#register-btn').click(() => {
+		if(RegisterTest()) {
+			loginAllow('#register-email','#register-password','#register-msg');
+			$('#register-verify').val('');
+		}
+	})
 })
 
 // 登陆界面头部切换
@@ -84,12 +91,12 @@ function loginActive(index) {
 
 // 登录框验证 - 邮箱登录
 var EmailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-var PassWord = /^[a-z0-9A-Z]{6,20}$/;
+var PassWordReg = /^[a-z0-9A-Z]{6,20}$/;
 var IsLogin = false;
 
 function loginTest() {
 	let IsEmail = EmailReg.test($('#login-email').val());
-	let IsPass = PassWord.test($('#login-password').val())
+	let IsPass = PassWordReg.test($('#login-password').val())
 	if(IsEmail && IsPass){
 		$('#login-msg').text('验证通过').removeClass('warning').addClass('succeed')
 		IsLogin = true;
@@ -104,7 +111,7 @@ var IsLoginPhone = false;
 
 function loginPhoneTest() {
 	let IsPhone = PhoneNumReg.test($('#login-phone').val());
-	let IsPass = PassWord.test($('#login-phone-password').val());
+	let IsPass = PassWordReg.test($('#login-phone-password').val());
 	// console.log(IsPhone);
 	if(IsPhone && IsPass){
 		$('#login-phone-msg').text('验证通过').removeClass('warning').addClass('succeed')
@@ -114,6 +121,38 @@ function loginPhoneTest() {
 	}
 }
 
+// 注册验证
+var IsRegisterEmail = false;
+var IsRegisterPassword = false;
+var IsRegisterVerify = false;
+var verifyReg = /^[0-9]{4}$/;
+
+function RegisterTest() {
+	if(!RegisterEmailTest() || !RegisterPasswordTest()){
+		$('register-msg').text('请输入正确的邮箱地址和密码！').addClass('warning');
+		return false;
+	}else if(!RegisterVerifyTest()){
+		$('register-msg').text('请输入正确的4位验证码！').addClass('warning');
+		return false;
+	}else if(RegisterEmailTest() && RegisterPasswordTest() && RegisterVerifyTest()){
+		$('#register-msg').text('验证通过').removeClass('warning').addClass('succeed');
+		return true;
+	}
+}
+function RegisterEmailTest() {
+	let IsEmail = EmailReg.test($('#register-email').val());
+	return IsEmail ? true:false;
+}
+function RegisterPasswordTest() {
+	let IsPass = PassWordReg.test($('#register-password').val());
+	return IsPass ? true:false;
+}
+function RegisterVerifyTest() {
+	let IsVer = verifyReg.test($('#register-verify').val());
+	return IsVer ? true:false;
+}
+
+// 登录注册 成功方法
 function loginAllow(input1,input2,loginMsg) {
 	$('.login').hide();
 	$(input1).val('');
