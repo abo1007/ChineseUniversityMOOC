@@ -112,7 +112,6 @@ var IsLoginPhone = false;
 function loginPhoneTest() {
 	let IsPhone = PhoneNumReg.test($('#login-phone').val());
 	let IsPass = PassWordReg.test($('#login-phone-password').val());
-	// console.log(IsPhone);
 	if(IsPhone && IsPass){
 		$('#login-phone-msg').text('验证通过').removeClass('warning').addClass('succeed')
 		IsLoginPhone = true;
@@ -128,11 +127,11 @@ var IsRegisterVerify = false;
 var verifyReg = /^[0-9]{4}$/;
 
 function RegisterTest() {
-	if(!RegisterEmailTest() || !RegisterPasswordTest()){
-		$('register-msg').text('请输入正确的邮箱地址和密码！').addClass('warning');
+	if(RegisterEmailTest() === false || RegisterPasswordTest() === false){
+		$('#register-msg').text('请输入正确的邮箱地址和密码！').addClass('warning');
 		return false;
-	}else if(!RegisterVerifyTest()){
-		$('register-msg').text('请输入正确的4位验证码！').addClass('warning');
+	}else if(RegisterVerifyTest() === false){
+		$('#register-msg').text('请输入正确的4位验证码！').addClass('warning');
 		return false;
 	}else if(RegisterEmailTest() && RegisterPasswordTest() && RegisterVerifyTest()){
 		$('#register-msg').text('验证通过').removeClass('warning').addClass('succeed');
@@ -141,11 +140,11 @@ function RegisterTest() {
 }
 function RegisterEmailTest() {
 	let IsEmail = EmailReg.test($('#register-email').val());
-	return IsEmail ? true:false;
+	return IsEmail;
 }
 function RegisterPasswordTest() {
 	let IsPass = PassWordReg.test($('#register-password').val());
-	return IsPass ? true:false;
+	return IsPass;
 }
 function RegisterVerifyTest() {
 	let IsVer = verifyReg.test($('#register-verify').val());
@@ -154,6 +153,7 @@ function RegisterVerifyTest() {
 
 // 登录注册 成功方法
 function loginAllow(input1,input2,loginMsg) {
+	alert('登陆成功！')
 	$('.login').hide();
 	$(input1).val('');
 	$(input2).val('');
