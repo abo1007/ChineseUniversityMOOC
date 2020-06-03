@@ -2,19 +2,6 @@
 
 $(document).ready(() => {
 	
-	// lession 框显示隐藏动画
-	$('#li-lession').mouseover(() => {
-		$('.lession').fadeIn(600);
-		$('.lession').mousemove(() => {
-			$('.lession').show()
-		}).mouseleave(() => {
-			$('.lession').fadeOut(400)
-		})
-	})
-	$('.li-hide').mouseover(() => {
-		$('.lession').fadeOut(400)
-	})
-	
 	// 绑定 login窗口打开和关闭 事件
 	$('#removeWindowSpan').click(() => {
 		$('.login').hide();
@@ -25,23 +12,6 @@ $(document).ready(() => {
 	$('#openWindowB').click(() => {
 		$('.login').show();
 	})
-	
-	// 轮播图
-	var swipeQueue = ['#swipeli1','#swipeli2','#swipeli3'];
-	var swipeSum = 0;
-	var swipeBall = document.querySelectorAll('.swipeItem span')
-	setInterval(() => {
-		$('.swipeItem span').removeClass('spanActive');
-		$(swipeQueue[swipeSum]).fadeOut(500)
-		if(swipeSum == 2){
-			$(swipeQueue[0]).fadeIn(500)
-			swipeSum = 0;
-		}else{
-			$(swipeQueue[swipeSum+1]).fadeIn(500)
-			swipeSum++;
-		}
-		swipeBall[swipeSum].className = 'spanActive';
-	},4000)
 	
 	// 登录框验证 - 邮箱登录
 	$('#login-email').blur(() => loginTest());
